@@ -1,24 +1,24 @@
-import requests
-from ghost import Ghost
-from bs4 import BeautifulSoup
+# libraries to be imported
+from requests_html import HTMLSession
 
-ghost = Ghost()
+# initialising html session class for multiple sites at the same time
+session = HTMLSession()
+# headers = {"User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36'}
 
-url = 'https://www.airbnb.co.uk/rooms/33571268'
-headers = {"User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36'}
+url = 'https://www.airbnb.co.uk/rooms/33090114'
+response = session.get(url)
 
-page = requests.get(url, headers=headers)
+# sleep gives us a little time buffer between actions, allows mutliple scroll to catch all info on page 
+response.html.render(sleep=1, keep_page=True, scrolldown=5)
 
-ghost.open(url)
-current_state = ghost.content
+property_name = response.html.search('span')
+print(property_name)
 
-# creating a BeautifulSoup Obj to play around with
-soup = ghost.BeautifulSoup(page.content, 'html.parser')
+# for name in property_name:
+#     property = {'property name': name.text}
+#     print(property_name)
 
-property_name = soup.find(id="TITLE_DEFAULT")
 property_type = ""
 number_of_bedrooms = ""
 number_of_bathrooms = ""
 list_all_amenities = ""
-
-print (current_state)
