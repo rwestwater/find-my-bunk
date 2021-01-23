@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# R&D prototyping nonsense
+./scraper_bs.py
+./selenium.scr.py
