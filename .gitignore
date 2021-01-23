@@ -129,5 +129,6 @@ dmypy.json
 .pyre/
 
 # R&D prototyping nonsense
-./scraper_bs.py
-./selenium.scr.py
+scraper_bs.py
+selenium.scr.py
+resrc/
