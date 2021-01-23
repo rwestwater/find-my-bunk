@@ -12,7 +12,7 @@ Packages installed:
 TL;DR - Access a URL and pull out the data from that page
 
 MVP:
-Please write some code that scrapes property name, property type (e.g Apartment), number of bedrooms, bathrooms and list of the amenities.
+- Please write some code that scrapes property name, property type (e.g Apartment), number of bedrooms, bathrooms and list of the amenities.
 
 Extensions:
 - To dockerize this and make it MUCH MORE easier for installing all the requirements such as qt, cmake..
