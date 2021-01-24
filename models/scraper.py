@@ -1,28 +1,43 @@
 # libraries to be imported
 from requests_html import HTMLSession
+import os
 
 class Scraper():
 
-    property_name = ""
-    property_type = ""
-    number_of_bedrooms = int
-    number_of_bathrooms = int
-    list_all_amenities = {}
-    
     # initialise the class (constructor)
     def __init__(self, airbnb_urls):
-        # initialising html session class
-        self.session = HTMLSession()
-        self.run_everything(airbnb_urls)
+        try:
+            self.session = HTMLSession() # initialising html session class
+            self.run_everything(airbnb_urls) # passes in the urls from find_my_bunk
+        except Exception as e:
+            print(("\nFatal error - session not started, exitting:\n{}\n").format(e))
+            exit()
 
+        try: 
+            if not os.path.exists('./json_results/'): # if jsons result dir doesn't exist
+                os.makedirs('./json_results/') # make it
+        except Exception as e:
+            print(("\nJson folder could not be created:\n{}\n").format(e))
+
+    # find all the elements on the page
     def get_all_info(self, response):
-        all_property_info = response.html.find('#site-content > div > div')
-        all_property_info = all_property_info[0].text.splitlines()
-        return all_property_info
+        try: 
+            all_property_info = response.html.find('#site-content > div > div') # returns a string
+            all_property_info = all_property_info[0].text.splitlines() # split the returned string into lists
+            return all_property_info
+        except Exception as e:
+            print(("\nSite information not retrieved, please check element paths, exitting:\n{}\n").format(e))
+
+    def create_results_json(self, property_name):
+        try:
+            openfile = open(('/json_results/{}.json'.format(property_name)), 'wb')
+        except Exception as e:
+            print(("\nJson results file could not be created:\n{}\n").format(e))
        
     def get_property_name(self, all_property_info):
-        property_name = all_property_info[0]
+        property_name = all_property_info[0] # take the name from the first position in the list
         print("Property name: " + property_name)
+        self.create_results_json(property_name)
 
     def get_property_type(self, all_property_info):
         property_type_index_position = [i for i, str in enumerate(all_property_info) if 'hosted' in str]
