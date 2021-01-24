@@ -1,21 +1,46 @@
 # find-my-bunk
-A web scraper written in Python and Typescript that displays information scraped from airbnb listings
-Readmes are used as brain dumps until I complete the project and then I come back and make it shiny for other users.
+An application web scraper written in Python that displays and stores information scraped from airbnb listings
 
-Python backend for web scraper - Python 3.8.5
-Typescript frontend for (hopefully) pretty display of data
-MongoDB... Dynamo maybe for data storage
-Host on AWS cause that's fun!
+## Pseudocode
+```
+for url in urls:
+    loop through each response:
+        return property name
+        return property type
+        return number of bedrooms and bathrooms
+        return list of amenities
 
-Packages installed:
-- requests_html package : This library intends to make parsing HTML (e.g. scraping the web) as simple and intuitive as possible.
-TL;DR - Access a URL and pull out the data from that page
+        write return responses to json for parsing to front end
+```
 
-MVP:
-- Please write some code that scrapes property name, property type (e.g Apartment), number of bedrooms, bathrooms and list of the amenities.
+## Installation
+### It is recommended that this program is run in a python virtual enviroment
+You can find a list of requirements in the requirements.txt file in the root of the repo.
 
-Extensions:
-- To dockerize this and make it MUCH MORE easier for installing all the requirements such as qt, cmake..
+Modules installed:
+- requests-html: I chose this library as it was lightweight and renders javascript without which the data could not be scraped.
+
+How to install modules:
+`pip install -r requirements.txt`
+`pip install requests-html`
+
+## MVP:
+- Please write some code that scrapes: 
+-- property name
+-- property type (e.g Apartment) 
+-- number of bedrooms + bathrooms
+-- list of the amenities.
+
+- from the following 3 urls:
+-- `https://www.airbnb.co.uk/rooms/33571268`
+-- `https://www.airbnb.co.uk/rooms/33090114`
+-- `https://www.airbnb.co.uk/rooms/40558945`
+
+## Extensions:
+- To dockerize this and make it MUCH MORE easier for installing
+- Typescript frontend for (hopefully) pretty display of data
+- Store the returned information in MongoDB or Dynamo
+- Host on AWS because cause that's fun!
 
 Resources:
 https://requests.readthedocs.io/projects/requests-html/en/latest/
