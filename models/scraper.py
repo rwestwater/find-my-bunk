@@ -1,11 +1,13 @@
 # libraries to be imported
 from requests_html import HTMLSession
 import os
+import json
 
 class Scraper():
 
     # initialise the class (constructor)
     def __init__(self, airbnb_urls):
+
         try: 
             if not os.path.exists('./json_results/'): # if jsons result dir doesn't exist
                 os.makedirs('./json_results/') # make it
@@ -19,7 +21,6 @@ class Scraper():
             print(("\nFatal error - session not started, exitting:\n{}\n").format(e))
             exit()
 
-
     # find all the elements on the page
     def get_all_info(self, response):
         try: 
@@ -31,7 +32,7 @@ class Scraper():
 
     def create_results_json(self, property_name):
         try:
-            openfile = open(('json_results/{}.json'.format(property_name)), 'wb')
+            open(('json_results/{}.json'.format(property_name)), 'wb')
         except Exception as e:
             print(("\nJson results file could not be created:\n{}\n").format(e))
        
@@ -39,39 +40,45 @@ class Scraper():
         property_name = all_property_info[0] # take the name from the first position in the list
         print("Property name: " + property_name)
         self.create_results_json(property_name)
-        property_info_dict["property name"] = property_name
-        print(property_info_dict)
+        return property_name
 
     def get_property_type(self, all_property_info):
         property_type_index_position = [i for i, str in enumerate(all_property_info) if 'hosted' in str]
         property_type_index_position = int(property_type_index_position[0])
-        property_type = all_property_info[property_type_index_position] 
-        # print("Property type: " + property_type)
+        property_type = all_property_info[property_type_index_position]
+        return property_type
 
     def get_number_of_beds_and_baths(self, all_property_info):
         bedrooms_index_position = [i for i, str in enumerate(all_property_info) if 'guests' in str]
         bedrooms_index_position = int(bedrooms_index_position[0])
         number_of_bedrooms = all_property_info[bedrooms_index_position] 
         number_of_bedrooms = number_of_bedrooms.split("·")
-        # print("Number of bedrooms: " + number_of_bedrooms[1])
-        # print("Number of bathrooms: " + number_of_bedrooms[3])
-        # print("Sleeps: " + number_of_bedrooms[0])
+        return number_of_bedrooms
 
     def get_list_of_amenities(self, all_property_info):
         amenities_index_position = [i for i, str in enumerate(all_property_info) if 'Amenities:' in str]
         amenities_index_position = int(amenities_index_position[0])
         list_of_amenities = all_property_info[amenities_index_position] 
-        # print("List of " + list_of_amenities)
+        return list_of_amenities
 
     def run_everything(self, airbnb_urls):
         for url in airbnb_urls:
             response = self.session.get(url)
+            property_info_dict = {}
 
             # sleep gives us a little time buffer between actions
             response.html.render(sleep=5, keep_page=True)
             info = self.get_all_info(response)
-            self.get_property_name(info)
-            self.get_property_type(info)
-            self.get_number_of_beds_and_baths(info)
-            self.get_list_of_amenities(info)
+            property_name = self.get_property_name(info)
+            property_type = self.get_property_type(info)
+            number_of_beds_and_baths = self.get_number_of_beds_and_baths(info)
+            list_of_amenities = self.get_list_of_amenities(info)
             print("___________________")
+
+            property_info_dict["property_name"] = property_name
+            property_info_dict["property_type"] = property_type
+            property_info_dict["number_of_beds_and_baths"] = number_of_beds_and_baths
+            property_info_dict["list_of_amenities"] = list_of_amenities
+
+            with (open(('json_results/{}.json'.format(property_name)), 'w')) as fp:
+                json.dump(property_info_dict, fp)
