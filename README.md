@@ -15,14 +15,22 @@ for url in urls:
 
 ## Installation
 ### It is recommended that this program is run in a python virtual enviroment
+To set up a virtual enviroment for python:<br>
+
+```
+Ensure you have the python virtualenv package installed
+Run the commands:
+    virtualenv name-of-your-environment -p python3
+    source name-of-your-environment/bin/activate
+```
+<br>
 You can find a list of requirements in the requirements.txt file in the root of the repo.
 
 Modules installed:
 - requests-html: I chose this library as it was lightweight and renders javascript without which the data could not be scraped.
 
 How to install modules:<br><br>
-`pip install -r requirements.txt`<br><br>
-`pip install requests-html`
+`pip install -r requirements.txt`
 
 ## MVP:
 - Please write some code that scrapes: <br><br>
@@ -50,7 +58,7 @@ How to install modules:<br><br>
 
 ## Author Notes
 - Keep as vanilla as possible
-- Simple design for accessability
+- Simple design for accessibility
 - Intended to make a Parent class which I could then make instances of for different sites, eg. airbnb, expedia and tripadvisor but I got carried away writing the actual solution.
 
 Resources:<br><br>
