@@ -10,6 +10,8 @@ def main(scraper):
                 ]
     
     scraper(airbnb_urls)
-    
+
+# __main__ sets this file to be the "main" module to be run
+# imported files will have __name__ set to their file name    
 if __name__ == '__main__':
   main(scraper)
